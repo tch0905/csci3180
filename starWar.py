@@ -12,9 +12,9 @@
 * and regulations, as contained in the website
 * http://www.cuhk.edu.hk/policy/academichonesty/
 *
-* Name: <FILL YOUR NAME HERE>
-* Student ID: <FILL YOUR STUDENT ID HERE>
-* Email Address: <FILL YOUR EMAIL ADDRESS HERE>
+* Name: Tsang Cheuk Hang
+* Student ID: 1155167650
+* Email Address: a1182116615@gmail.com
 *
 * Source material acknowledgements (if any):
 *
@@ -82,10 +82,12 @@ class Plane:
 
     def move(self):
         # TODO: Implement the logic of the next position the plane moves to here.
+        pass
         
 
     def is_collision(self, bullet_location):
         # TODO: Implement the logic to determine whether the plane has been hit by a bullet here.
+        pass
         
 
     def shoot(self, bullet_location, bullet_direction, bullet_type):
@@ -130,6 +132,7 @@ class Bullet:
     
     def check_on_edge(self):
         # TODO: Implement the logic to determine whether the bullet reaches the map boundary.
+        pass
         
 
 class Player(Plane):
@@ -220,10 +223,11 @@ class Environment:
             global_bullets.pop(idx)
         
         # TODO: Implement the logic to determine whether the game should end.
-        if global_enemy.life <= 0:
-            self._winner = 
-        if global_player.life <= 0:
-            self._winner = 
+        # if global_enemy.life <= 0:
+        #     self._winner =
+        # if global_player.life <= 0:
+        #     self._winner =
+        print()
 
     def display_all(self):
         print()
@@ -243,10 +247,11 @@ class Environment:
         print()
         
         # TODO: Implement speaking logic here.
-        if random.randint(0, 1) == 0:
-            self._speaker = 
-        else:
-            self._speaker = 
+        print()
+        # if random.randint(0, 1) == 0:
+        #     self._speaker =
+        # else:
+        #     self._speaker =
         self._speaker.speak() 
         
         for _ in range(GAME_MAP_COLS + 2):
