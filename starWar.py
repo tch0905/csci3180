@@ -72,9 +72,30 @@ class Plane:
         self._speed = init_speed
         self._direction = init_direction
 
-    # TODO: add Property Decorator for attributes self._life, self._symbol, self._direction here, including setter.
-    
-    
+    @property
+    def life(self):
+        return self._life
+
+    @life.setter
+    def life(self,_life):
+        self._life = _life
+
+    @property
+    def symbol(self):
+        return self._symbol
+
+    @symbol.setter
+    def symbol(self,_symbol):
+        self._symbol = _symbol
+
+    @property
+    def direction(self):
+        return self._direction
+
+    @direction.setter
+    def direction(self, _direction):
+        self._direction = _direction
+
     def draw(self):
         for i in range(self._size[0]):
             for j in range(self._size[1]):
@@ -109,9 +130,14 @@ class Bullet:
         self._speed = 1
         self._direction = init_direction
 
-    # TODO: add Property Decorator for attributes self._validity here, including setter.
-    
-    
+    @property
+    def validity(self):
+        return self._validity
+
+    @validity.setter
+    def validity(self,_validity):
+        self._validity = _validity
+
     def draw(self):
         if not self._validity:
             return
@@ -192,13 +218,13 @@ class Environment:
         
         # counting down
         print("\n\n\t\tThe game is about to begin!")
-        for i in range(3, 0, -1):
-            start = time.time()
-            while time.time() - start <= 1:
-                pass  # 1 s
-
-            if i > 0:
-                print("\n\n\t\tCountdown:", i)
+        # for i in range(3, 0, -1):
+        #     start = time.time()
+        #     while time.time() - start <= 1:
+        #         pass  # 1 s
+        #
+        #     if i > 0:
+        #         print("\n\n\t\tCountdown:", i)
 
     def move_all(self):
         global_player.move()
@@ -248,17 +274,19 @@ class Environment:
         
         # TODO: Implement speaking logic here.
         print()
-        # if random.randint(0, 1) == 0:
-        #     self._speaker =
-        # else:
-        #     self._speaker =
+        if random.randint(0, 1) == 0:
+            self._speaker = global_player
+        else:
+            self._speaker = global_enemy
         self._speaker.speak() 
         
         for _ in range(GAME_MAP_COLS + 2):
             print('-', end='')
         print()
-        print("ENEMY\tHP: ", global_enemy.life)
+        print("ENEMY\tHP: ", global_enemy._life)
+
         print("PLAYER\tHP: ", global_player.life)
+
 
     def display_result(self):
         self._winner.display_info()
