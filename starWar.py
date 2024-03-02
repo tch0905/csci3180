@@ -252,10 +252,10 @@ class Environment:
             global_bullets.pop(idx)
 
         # TODO: Implement the logic to determine whether the game should end.
-        # if global_enemy.life <= 0:
-        #     self._winner =
-        # if global_player.life <= 0:
-        #     self._winner =
+        if global_enemy.life <= 0:
+            self._winner = global_player
+        if global_player.life <= 0:
+            self._winner = global_enemy
         print()
 
     def display_all(self):
