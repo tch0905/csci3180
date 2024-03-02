@@ -155,12 +155,17 @@ class Bullet:
 
         # TODO: Implement the logic of the next position the bullet moves to here.
 
+
         # TODO: Implement the logic to determine whether the bullet hits the plane.
 
         self.check_on_edge()
 
     def check_on_edge(self):
-        # TODO: Implement the logic to determine whether the bullet reaches the map boundary.
+        if self._location[0] <= self._speed and self._bullet_type == BulletType.BUL_FROM_PLAYER:
+            self._bullet_type = True
+
+        if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_PLAYER:
+            self._bullet_type = True
         pass
 
 
