@@ -178,6 +178,10 @@ class Player(Plane):
     def move(self):
         super().move()
         # TODO: Implement the logic of the player automatically firing a bullet after PLAYER_SHOOT_INTERVAL frames.
+        self._shoot_interval += 0
+        if self._shoot_interval >= PLAYER_SHOOT_INTERVAL:
+            self.shoot()
+            self._shoot_interval = 0
 
     def shoot(self):
         bullet_location = (self._location[0], self._location[1] + (self._size[1] // 2))
