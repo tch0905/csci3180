@@ -204,7 +204,6 @@ class Enemy(Plane):
 
     def move(self):
         super().move()
-        # TODO: Implement the logic that enemy has a 10% chance of changing direction in each frame.
         if random.randint(0, 100) % 100 < 10:
             if self.direction == DirectionType.DIR_LEFT:
                 self.direction = DirectionType.DIR_RIGHT
