@@ -154,11 +154,18 @@ class Bullet:
             self.validity = False
             return
 
-        # TODO: Implement the logic of the next position the bullet moves to here.
 
+        self._location = tuple(x + (global_directions[self.direction][y] * self._speed + z) % z
+                               for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
-        # TODO: Implement the logic to determine whether the bullet hits the plane.
-
+        if self._bullet_type == BulletType.BUL_FROM_ENEMY:
+            if global_player.is_collision:
+                global_player.hit()
+                self.validity = False
+        else:
+            if global_player.is_collision:
+                global_enemy.hit()
+                self.validity = False
         self.check_on_edge()
 
     def check_on_edge(self):
@@ -214,6 +221,7 @@ class Enemy(Plane):
         if self._shoot_interval >= ENEMY_SHOOT_INTERVAL:
             self.shoot()
             self._shoot_interval = 0
+
     def shoot(self):
         bullet_location = (self._location[0] + self._size[0] - 1, self._location[1] + (self._size[1] // 2))
         super().shoot(bullet_location, DirectionType.DIR_DOWN, BulletType.BUL_FROM_ENEMY)
