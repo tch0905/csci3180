@@ -113,6 +113,7 @@ class Plane:
 
     def is_collision(self, bullet_location):
         # TODO: Implement the logic to determine whether the plane has been hit by a bullet here.
+        print()
         pass
 
     def shoot(self, bullet_location, bullet_direction, bullet_type):
@@ -204,14 +205,14 @@ class Enemy(Plane):
     def move(self):
         super().move()
         # TODO: Implement the logic that enemy has a 10% chance of changing direction in each frame.
-        if random.int(0, 100) % 100 < 10:
+        if random.randint(0, 100) % 100 < 10:
             if self.direction == DirectionType.DIR_LEFT:
                 self.direction = DirectionType.DIR_RIGHT
             else:
                 self.direction = DirectionType.DIR_LEFT
 
-        self._shoot_interval +=1
-        if (self.shoot_interval >=  ENEMY_SHOOT_INTERVAL):
+        self._shoot_interval += 1
+        if self._shoot_interval >= ENEMY_SHOOT_INTERVAL:
             self.shoot()
             self._shoot_interval = 0
     def shoot(self):
