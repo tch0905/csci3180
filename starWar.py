@@ -112,9 +112,7 @@ class Plane:
                                for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
     def is_collision(self, bullet_location):
-        # TODO: Implement the logic to determine whether the plane has been hit by a bullet here.
-        print()
-        pass
+        return all(x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size))
 
     def shoot(self, bullet_location, bullet_direction, bullet_type):
         new_bullet = Bullet(bullet_location, self._symbol, bullet_direction, bullet_type)
@@ -154,16 +152,15 @@ class Bullet:
             self.validity = False
             return
 
-
-        self._location = tuple(x + (global_directions[self.direction][y] * self._speed + z) % z
+        self._location = tuple(x + (global_directions[self._direction][y] * self._speed + z) % z
                                for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
         if self._bullet_type == BulletType.BUL_FROM_ENEMY:
-            if global_player.is_collision:
+            if global_player.is_collision(self._location ):
                 global_player.hit()
                 self.validity = False
         else:
-            if global_player.is_collision:
+            if global_enemy.is_collision(self._location ):
                 global_enemy.hit()
                 self.validity = False
         self.check_on_edge()
@@ -185,7 +182,6 @@ class Player(Plane):
 
     def move(self):
         super().move()
-        # TODO: Implement the logic of the player automatically firing a bullet after PLAYER_SHOOT_INTERVAL frames.
         self._shoot_interval += 0
         if self._shoot_interval >= PLAYER_SHOOT_INTERVAL:
             self.shoot()
@@ -275,12 +271,11 @@ class Environment:
         for idx in reversed(to_be_delete):
             global_bullets.pop(idx)
 
-        # TODO: Implement the logic to determine whether the game should end.
         if global_enemy.life <= 0:
             self._winner = global_player
         if global_player.life <= 0:
             self._winner = global_enemy
-        print()
+
 
     def display_all(self):
         print()
@@ -299,7 +294,6 @@ class Environment:
             print('-', end='')
         print()
 
-        # TODO: Implement speaking logic here.
         print()
         if random.randint(0, 1) == 0:
             self._speaker = global_player
