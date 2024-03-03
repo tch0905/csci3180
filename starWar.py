@@ -200,9 +200,16 @@ class Enemy(Plane):
     def move(self):
         super().move()
         # TODO: Implement the logic that enemy has a 10% chance of changing direction in each frame.
+        if random.int(0, 100) % 100 < 10:
+            if self.direction == DirectionType.DIR_LEFT:
+                self.direction = DirectionType.DIR_RIGHT
+            else:
+                self.direction = DirectionType.DIR_LEFT
 
-        # TODO: Implement the logic of the player automatically firing a bullet after ENEMY_SHOOT_INTERVAL frames.
-
+        self._shoot_interval +=1
+        if (self.shoot_interval >=  ENEMY_SHOOT_INTERVAL):
+            self.shoot()
+            self._shoot_interval = 0
     def shoot(self):
         bullet_location = (self._location[0] + self._size[0] - 1, self._location[1] + (self._size[1] // 2))
         super().shoot(bullet_location, DirectionType.DIR_DOWN, BulletType.BUL_FROM_ENEMY)
