@@ -141,11 +141,14 @@ class Gift:
 
     def move(self):
         # TODO: Implement the logic to determine whether the player has picked up the gift.
-        pass
+        if global_player.is_collision(self._location):
+            global_player.give_gift()
+            global_player.validity = false
     
     def respawn(self):
         # TODO: Implement the logic to respawn the gift.
-        pass
+        self._locaiton = (random.randint()%GAME_MAP_ROWS, random.randint()%GAME_MAP_COLS)
+        self._validity = True
 
 class Bullet:
     def __init__(self, init_location, init_symbol, init_direction, init_type):
