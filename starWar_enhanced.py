@@ -12,9 +12,9 @@
 * and regulations, as contained in the website
 * http://www.cuhk.edu.hk/policy/academichonesty/
 *
-* Name: <FILL YOUR NAME HERE>
-* Student ID: <FILL YOUR STUDENT ID HERE>
-* Email Address: <FILL YOUR EMAIL ADDRESS HERE>
+* Name: Tsang Cheuk Hang
+* Student ID: 1155167650
+* Email Address: 1155167650@link.cuhk.edu.hk
 *
 * Source material acknowledgements (if any):
 *
@@ -75,7 +75,29 @@ class Plane:
         self._direction = init_direction
 
     # TODO: add Property Decorator for attributes self._life, self._symbol, self._direction here, including setter.
-    
+    @property
+    def life(self):
+        return self._life
+
+    @life.setter
+    def life(self, _life):
+        self._life = _life
+
+    @property
+    def symbol(self):
+        return self._symbol
+
+    @symbol.setter
+    def symbol(self, _symbol):
+        self._symbol = _symbol
+
+    @property
+    def direction(self):
+        return self._direction
+
+    @direction.setter
+    def direction(self, _direction):
+        self._direction = _direction
     
     def draw(self):
         for i in range(self._size[0]):
@@ -83,12 +105,13 @@ class Plane:
                 global_game_map[(self._location[0] + i) % GAME_MAP_ROWS][(self._location[1] + j) % GAME_MAP_COLS] = self._symbol
 
     def move(self):
-        # TODO: Implement the logic of the next position the plane moves to here.
-        
+        self._location = tuple((x + (global_directions[self.direction][y] * self._speed + z)) % z
+                               for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
+
 
     def is_collision(self, bullet_location):
-        # TODO: Implement the logic to determine whether the plane has been hit by a bullet here.
-        
+        return all([x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size)])
+
 
     def shoot(self, bullet_location, bullet_direction, bullet_type):
         new_bullet = Bullet(bullet_location, self._symbol, bullet_direction, bullet_type)
@@ -104,7 +127,12 @@ class Gift:
         self._symbol = 'G'
 
     # TODO: add Property Decorator for attributes self._validity here, including setter.
-    
+    @property
+    def validity(self):
+        return self._validity
+    @validity.setter
+    def validity(self,_validity):
+        self._validity = _validity
     
     def draw(self):
         if not self._validity:
@@ -113,11 +141,11 @@ class Gift:
 
     def move(self):
         # TODO: Implement the logic to determine whether the player has picked up the gift.
-        
+        pass
     
     def respawn(self):
         # TODO: Implement the logic to respawn the gift.
-        
+        pass
 
 class Bullet:
     def __init__(self, init_location, init_symbol, init_direction, init_type):
@@ -144,17 +172,25 @@ class Bullet:
             self.validity = False
             return
 
-        # TODO: Implement the logic of the next position the bullet moves to here.
-        
-        
-        # TODO: Implement the logic to determine whether the bullet hits the plane.
-        
-        
+        self._location = tuple((x + (global_directions[self._direction][y] * self._speed + z)) % z
+                               for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
+
+        if self._bullet_type == BulletType.BUL_FROM_ENEMY:
+            if global_player.is_collision(self._location):
+                global_player.hit()
+                self.validity = False
+        else:
+            if global_enemy.is_collision(self._location):
+                global_enemy.hit()
+                self.validity = False
         self.check_on_edge()
-    
+
     def check_on_edge(self):
-        # TODO: Implement the logic to determine whether the bullet reaches the map boundary.
-        
+        if self._location[0] <= self._speed and self._bullet_type == BulletType.BUL_FROM_PLAYER:
+            self._bullet_on_edge = True
+
+        if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_ENEMY:
+            self._bullet_on_edge = True
 
 class Player(Plane):
     def __init__(self, init_location):
@@ -167,8 +203,11 @@ class Player(Plane):
     
     def move(self):
         super().move()
-        # TODO: Implement the logic of the player automatically firing a bullet after PLAYER_SHOOT_INTERVAL frames.
-        
+        self._shoot_interval += 1
+        if self._shoot_interval >= PLAYER_SHOOT_INTERVAL:
+            self.shoot()
+            self._shoot_interval = 0
+
         # TODO: Implement the logic of the gift effect countdown.
 
 
@@ -185,11 +224,10 @@ class Player(Plane):
         
     def give_gift(self):
         # TODO: Implement the logic of the effect of the player picking up a gift.
-        
+        pass
 
     def hit(self):
-        # TODO: Implement the logic of the player gets hit (considering the effect of gift).
-        
+        self.life -= 1
 
 class Enemy(Plane):
     def __init__(self, init_location):
@@ -198,11 +236,16 @@ class Enemy(Plane):
 
     def move(self):
         super().move()
-        # TODO: Implement the logic that enemy has a 10% chance of changing direction in each frame.
-        
-        
-        # TODO: Implement the logic of the player automatically firing a bullet after ENEMY_SHOOT_INTERVAL frames.
-        
+        if random.randint(0, 100) % 100 < 10:
+            if self.direction == DirectionType.DIR_LEFT:
+                self.direction = DirectionType.DIR_RIGHT
+            else:
+                self.direction = DirectionType.DIR_LEFT
+
+        self._shoot_interval += 1
+        if self._shoot_interval >= ENEMY_SHOOT_INTERVAL:
+            self.shoot()
+            self._shoot_interval = 0
 
     def shoot(self):
         bullet_location = (self._location[0] + self._size[0] - 1, self._location[1] + (self._size[1] // 2))        
@@ -267,9 +310,9 @@ class Environment:
         
         # TODO: Implement the logic to determine whether the game should end.
         if global_enemy.life <= 0:
-            self._winner = 
+            self._winner = global_player
         if global_player.life <= 0:
-            self._winner = 
+            self._winner = global_enemy
 
     def display_all(self):
         print()
@@ -290,9 +333,9 @@ class Environment:
         
         # TODO: Implement speaking logic here.
         if random.randint(0, 1) == 0:
-            self._speaker = 
+            self._speaker = global_player
         else:
-            self._speaker = 
+            self._speaker = global_enemy
         self._speaker.speak() 
         
         for _ in range(GAME_MAP_COLS + 2):

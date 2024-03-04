@@ -179,7 +179,6 @@ class Bullet:
 
         if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_ENEMY:
             self._bullet_on_edge = True
-        pass
 
 
 class Player(Plane):
