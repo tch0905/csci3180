@@ -167,10 +167,10 @@ class Bullet:
 
     def check_on_edge(self):
         if self._location[0] <= self._speed and self._bullet_type == BulletType.BUL_FROM_PLAYER:
-            self._bullet_type = True
+            self._bullet_on_edge = True
 
         if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_PLAYER:
-            self._bullet_type = True
+            self._bullet_on_edge = True
         pass
 
 
