@@ -182,7 +182,7 @@ class Player(Plane):
 
     def move(self):
         super().move()
-        self._shoot_interval += 0
+        self._shoot_interval += 1
         if self._shoot_interval >= PLAYER_SHOOT_INTERVAL:
             self.shoot()
             self._shoot_interval = 0
