@@ -108,11 +108,19 @@ class Plane:
                     (self._location[1] + j) % GAME_MAP_COLS] = self._symbol
 
     def move(self):
-        self._location = tuple(x + (global_directions[self.direction][y] * self._speed + z) % z
+        self._location = tuple((x + (global_directions[self.direction][y] * self._speed + z)) % z
                                for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
     def is_collision(self, bullet_location):
-        return all(x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size))
+        # tmp = [x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size)]
+        # if tmp[0]:
+        #     print("0 is collision")
+        # if tmp[1]:
+        #     print("1 is collision")
+        # temp = all([x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size)])
+        # if temp:
+        #     print("it is collision")
+        return all([x <= y < (x + z) for x,y,z in zip(self._location, bullet_location, self._size)])
 
     def shoot(self, bullet_location, bullet_direction, bullet_type):
         new_bullet = Bullet(bullet_location, self._symbol, bullet_direction, bullet_type)
@@ -152,7 +160,7 @@ class Bullet:
             self.validity = False
             return
 
-        self._location = tuple(x + (global_directions[self._direction][y] * self._speed + z) % z
+        self._location = tuple((x + (global_directions[self._direction][y] * self._speed + z)) % z
                                for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
         if self._bullet_type == BulletType.BUL_FROM_ENEMY:
