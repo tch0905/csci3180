@@ -156,11 +156,11 @@ class Bullet:
                                for x, y, z in zip(self._location, (0, 1), (GAME_MAP_ROWS, GAME_MAP_COLS)))
 
         if self._bullet_type == BulletType.BUL_FROM_ENEMY:
-            if global_player.is_collision(self._location ):
+            if global_player.is_collision(self._location):
                 global_player.hit()
                 self.validity = False
         else:
-            if global_enemy.is_collision(self._location ):
+            if global_enemy.is_collision(self._location):
                 global_enemy.hit()
                 self.validity = False
         self.check_on_edge()
@@ -169,7 +169,7 @@ class Bullet:
         if self._location[0] <= self._speed and self._bullet_type == BulletType.BUL_FROM_PLAYER:
             self._bullet_on_edge = True
 
-        if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_PLAYER:
+        if self._location[0] + self._speed >= GAME_MAP_ROWS and self._bullet_type == BulletType.BUL_FROM_ENEMY:
             self._bullet_on_edge = True
         pass
 
