@@ -213,8 +213,7 @@ class Player(Plane):
     @gift_countdown.setter
     def gift_countdown(self, value):
         self._gift_countdown = value
-    
-    
+
     def move(self):
         super().move()
         self._shoot_interval += 1
@@ -223,7 +222,10 @@ class Player(Plane):
             self._shoot_interval = 0
 
         # TODO: Implement the logic of the gift effect countdown.
-
+        if self._gift_countdown > 0:
+            self._gift_countdown -= 1
+            if self._gift_countdown == 0:
+                self.symbol = "^"
 
     def shoot(self):
         bullet_location = (self._location[0], self._location[1] + (self._size[1] // 2))
@@ -237,8 +239,8 @@ class Player(Plane):
         print("Congratulations! You have defeated them.")
         
     def give_gift(self):
-        # TODO: Implement the logic of the effect of the player picking up a gift.
-        pass
+        self._gift_countdown += GIFT_DURATION
+        self.symbol = 'G'
 
     def hit(self):
         self.life -= 1
@@ -320,8 +322,10 @@ class Environment:
             del global_elements[idx]
         
         # TODO: Implement the logic of respawning if the gift does not exist.
-        
-        
+        if global_gift.validity() == False:
+            global_gift.respawn()
+            global_elements.push_back(global_gift)
+
         # TODO: Implement the logic to determine whether the game should end.
         if global_enemy.life <= 0:
             self._winner = global_player
