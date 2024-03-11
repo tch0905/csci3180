@@ -74,7 +74,6 @@ class Plane:
         self._speed = init_speed
         self._direction = init_direction
 
-    # TODO: add Property Decorator for attributes self._life, self._symbol, self._direction here, including setter.
     @property
     def life(self):
         return self._life
@@ -126,7 +125,6 @@ class Gift:
         self._location = init_location
         self._symbol = 'G'
 
-    # TODO: add Property Decorator for attributes self._validity here, including setter.
     @property
     def validity(self):
         return self._validity
@@ -140,14 +138,12 @@ class Gift:
         global_game_map[self._location[0] % GAME_MAP_ROWS][self._location[1] % GAME_MAP_COLS] = self._symbol
 
     def move(self):
-        # TODO: Implement the logic to determine whether the player has picked up the gift.
         if global_player.is_collision(self._location):
             global_player.give_gift()
-            global_player.validity = false
+            self.validity = False
     
     def respawn(self):
-        # TODO: Implement the logic to respawn the gift.
-        self._locaiton = (random.randint()%GAME_MAP_ROWS, random.randint()%GAME_MAP_COLS)
+        self._location = (random.randint(0,15) % GAME_MAP_ROWS, random.randint(0,15)%GAME_MAP_COLS)
         self._validity = True
 
 class Bullet:
@@ -221,7 +217,6 @@ class Player(Plane):
             self.shoot()
             self._shoot_interval = 0
 
-        # TODO: Implement the logic of the gift effect countdown.
         if self._gift_countdown > 0:
             self._gift_countdown -= 1
             if self._gift_countdown == 0:
@@ -243,7 +238,8 @@ class Player(Plane):
         self.symbol = 'G'
 
     def hit(self):
-        self.life -= 1
+        if self.gift_countdown <= 0:
+            self.life -= 1
 
 class Enemy(Plane):
     def __init__(self, init_location):
@@ -321,12 +317,10 @@ class Environment:
         for idx in reversed(to_be_delete):
             del global_elements[idx]
         
-        # TODO: Implement the logic of respawning if the gift does not exist.
-        if global_gift.validity() == False:
+        if not global_gift.validity:
             global_gift.respawn()
-            global_elements.push_back(global_gift)
+            global_elements.append(global_gift)
 
-        # TODO: Implement the logic to determine whether the game should end.
         if global_enemy.life <= 0:
             self._winner = global_player
         if global_player.life <= 0:
@@ -349,7 +343,6 @@ class Environment:
             print('-', end='')
         print()
         
-        # TODO: Implement speaking logic here.
         if random.randint(0, 1) == 0:
             self._speaker = global_player
         else:
