@@ -162,8 +162,13 @@ class Bullet:
         self._speed = 1
         self._direction = init_direction
 
-    # TODO: add Property Decorator for attributes self._validity here, including setter.
-    
+    @property
+    def validity(self):
+        return self._validity
+
+    @validity.setter
+    def validity(self, _validity):
+        self._validity = _validity
     
     def draw(self):
         if not self._validity:
@@ -201,7 +206,13 @@ class Player(Plane):
         self._shoot_interval = 0
         self._gift_countdown = 0
 
-    # TODO: add Property Decorator for attributes self._gift_countdown here, including setter.
+    @property
+    def gift_countdown(self):
+        return self._gift_countdown
+
+    @gift_countdown.setter
+    def gift_countdown(self, value):
+        self._gift_countdown = value
     
     
     def move(self):
