@@ -143,7 +143,8 @@ class Gift:
             self.validity = False
     
     def respawn(self):
-        self._location = (random.randint(0,15) % GAME_MAP_ROWS, random.randint(0,15)%GAME_MAP_COLS)
+        self._location = (random.randint(0,GAME_MAP_ROWS-1) % GAME_MAP_ROWS,
+                          random.randint(0,GAME_MAP_COLS-1) % GAME_MAP_COLS)
         self._validity = True
 
 class Bullet:
@@ -248,7 +249,7 @@ class Enemy(Plane):
 
     def move(self):
         super().move()
-        if random.randint(0, 100) % 100 < 10:
+        if random.randint(0, 99) < 10:
             if self.direction == DirectionType.DIR_LEFT:
                 self.direction = DirectionType.DIR_RIGHT
             else:

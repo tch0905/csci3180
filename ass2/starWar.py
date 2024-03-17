@@ -214,7 +214,7 @@ class Enemy(Plane):
 
     def move(self):
         super().move()
-        if random.randint(0, 100) % 100 < 10:
+        if random.randint(0, 99) < 10:
             if self.direction == DirectionType.DIR_LEFT:
                 self.direction = DirectionType.DIR_RIGHT
             else:
@@ -248,13 +248,13 @@ class Environment:
 
         # counting down
         print("\n\n\t\tThe game is about to begin!")
-        # for i in range(3, 0, -1):
-        #     start = time.time()
-        #     while time.time() - start <= 1:
-        #         pass  # 1 s
-        #
-        #     if i > 0:
-        #         print("\n\n\t\tCountdown:", i)
+        for i in range(3, 0, -1):
+            start = time.time()
+            while time.time() - start <= 1:
+                pass  # 1 s
+
+            if i > 0:
+                print("\n\n\t\tCountdown:", i)
 
     def move_all(self):
         global_player.move()
@@ -311,7 +311,7 @@ class Environment:
         for _ in range(GAME_MAP_COLS + 2):
             print('-', end='')
         print()
-        print("ENEMY\tHP: ", global_enemy._life)
+        print("ENEMY\tHP: ", global_enemy.life)
 
         print("PLAYER\tHP: ", global_player.life)
 
